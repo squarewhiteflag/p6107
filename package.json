@@ -1,0 +1,22 @@
+{
+  "name": "random-game-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SC6107 Option 4: On-Chain Verifiable Random Game Platform",
+  "scripts": {
+    "build": "forge build",
+    "test": "forge test",
+    "coverage": "forge coverage",
+    "deploy:local": "forge script script/DeployChainFateArena.s.sol:DeployChainFateArena --rpc-url http://127.0.0.1:8545 --broadcast",
+    "frontend:dev": "npm --prefix frontend run dev",
+    "frontend:build": "npm --prefix frontend run build",
+    "frontend:check": "npm --prefix frontend run check",
+    "gas:snapshot": "forge snapshot --snap .gas-snapshot",
+    "gas:report": "forge test --gas-report",
+    "security:slither": "slither .",
+    "serve": "npm --prefix frontend run dev -- --host 127.0.0.1"
+  },
+  "devDependencies": {
+    "@chainlink/contracts": "^1.5.0"
+  }
+}
