@@ -13,8 +13,8 @@ import {
 } from "lucide-react";
 import { ethers } from "ethers";
 import arenaArtifact from "../../out/ChainFateArena.sol/ChainFateArena.json";
+import { TOKEN_OPTIONS, ZERO_ADDRESS, formatNative, tokenAddressFor, tokenDisplayName } from "./tokens.js";
 
-const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 const STORAGE_PREFIX = "chain-fate-reveals";
 const ERC20_ABI = [
   "function approve(address spender, uint256 value) external returns (bool)",
@@ -114,9 +114,9 @@ export default function App() {
       ]);
 
       const nextMetrics = {
-        ethAvailable: formatEther(ethAvailable),
-        ethTreasury: formatEther(ethTreasury),
-        ethReserved: formatEther(ethDice + ethBond + ethPot),
+        ethAvailable: formatSepoliaEth(ethAvailable),
+        ethTreasury: formatSepoliaEth(ethTreasury),
+        ethReserved: formatSepoliaEth(ethDice + ethBond + ethPot),
         fateAvailable: "-",
         fateTreasury: "-",
         fateReserved: "-"
@@ -161,7 +161,7 @@ export default function App() {
           id,
           token: round.token,
           totalTickets: round.totalTickets.toString(),
-          pot: round.token === ZERO_ADDRESS ? formatEther(round.pot) : formatFate(round.pot),
+          pot: round.token === ZERO_ADDRESS ? formatSepoliaEth(round.pot) : formatFate(round.pot),
           requestId: round.requestId.toString(),
           randomnessReady: round.randomnessReady,
           finalized: round.finalized,
@@ -197,7 +197,7 @@ export default function App() {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const tokenMode = form.get("token");
-    const token = tokenAddressFor(tokenMode);
+    const token = tokenAddressFor(tokenMode, cfg.fateTokenAddress);
     const wager = parseUnits(form.get("wager"));
     const bond = parseUnits(form.get("bond"));
     const rollUnder = Number(form.get("rollUnder"));
@@ -246,7 +246,7 @@ export default function App() {
         roundId,
         entryIndex: Number(entryCount) - 1,
         seed,
-        tokenMode: token === ZERO_ADDRESS ? "eth" : "fate",
+        tokenMode: token === ZERO_ADDRESS ? "sepoliaeth" : "fate",
         createdAt: Date.now()
       });
       setPending(readPending());
@@ -332,9 +332,9 @@ export default function App() {
       </header>
 
       <section className="status-grid" aria-label="Protocol status">
-        <Metric icon={<CircleDollarSign />} label="ETH Available" value={metrics.ethAvailable} invert />
-        <Metric label="ETH Treasury" value={metrics.ethTreasury} />
-        <Metric label="ETH Reserved" value={metrics.ethReserved} />
+        <Metric icon={<CircleDollarSign />} label="SepoliaETH Available" value={metrics.ethAvailable} invert />
+        <Metric label="SepoliaETH Treasury" value={metrics.ethTreasury} />
+        <Metric label="SepoliaETH Reserved" value={metrics.ethReserved} />
         <Metric icon={<CircleDollarSign />} label="FATE Available" value={metrics.fateAvailable} invert />
         <Metric label="FATE Treasury" value={metrics.fateTreasury} />
         <Metric label="FATE Reserved" value={metrics.fateReserved} />
@@ -343,7 +343,7 @@ export default function App() {
       <section className="workbench">
         <GamePanel eyebrow="Game One" title="Oracle Dice" icon={<Dice5 />}>
           <form className="form-grid" onSubmit={placeDiceBet}>
-            <Field label="Token" as="select" name="token" options={["eth", "fate"]} />
+            <Field label="Token" as="select" name="token" options={TOKEN_OPTIONS} />
             <Field label="Wager" name="wager" type="number" min="0" step="0.01" defaultValue="0.5" />
             <Field label="Reveal Bond" name="bond" type="number" min="0" step="0.01" defaultValue="0.05" />
             <Field label="Roll Under" name="rollUnder" type="number" min="2" max="95" defaultValue="50" />
@@ -424,7 +424,7 @@ export default function App() {
             {rounds.length ? (
               rounds.map((round) => (
                 <div className="round-item" key={round.id}>
-                  <strong>Round {round.id} - {round.token === ZERO_ADDRESS ? "ETH" : "FATE"}</strong>
+                  <strong>Round {round.id} - {tokenDisplayName(round.token, cfg.fateTokenAddress)}</strong>
                   <div className="mini-label">tickets {round.totalTickets} - pot {round.pot}</div>
                   <div className="mini-label">request {round.requestId} - ready {String(round.randomnessReady)} - finalized {String(round.finalized)}</div>
                   <code>proof {round.proofHash}</code>
@@ -489,7 +489,7 @@ function Field({ label, as, options, ...props }) {
       {as === "select" ? (
         <select {...props}>
           {options.map((option) => (
-            <option value={option} key={option}>{option.toUpperCase()}</option>
+            <option value={option} key={option}>{tokenDisplayName(option)}</option>
           ))}
         </select>
       ) : (
@@ -499,16 +499,12 @@ function Field({ label, as, options, ...props }) {
   );
 }
 
-function tokenAddressFor(tokenMode) {
-  return tokenMode === "fate" ? cfg.fateTokenAddress : ZERO_ADDRESS;
-}
-
 function parseUnits(value) {
   return ethers.parseEther(String(value || "0"));
 }
 
-function formatEther(value) {
-  return `${trimNumber(ethers.formatEther(value))} ETH`;
+function formatSepoliaEth(value) {
+  return formatNative(trimNumber(ethers.formatEther(value)));
 }
 
 function formatFate(value) {

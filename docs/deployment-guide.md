@@ -21,7 +21,7 @@ The script deploys:
 - `MockVRFCoordinator`
 - `ChainFateArena`
 - `MockERC20` as `FATE`
-- one ETH raffle round
+- one SepoliaETH/native test ETH raffle round
 - one FATE raffle round
 - initial bankroll liquidity for both tokens
 
@@ -60,7 +60,7 @@ For a public testnet, prefer the Chainlink VRF v2.5 adapter path:
 - deploy `ChainFateArena` with the adapter address
 - call `adapter.setConsumer(arena, true)` or use the provided deployment script
 - add the adapter address as a consumer in the Chainlink VRF subscription manager
-- seed the game bankroll with testnet ETH or a demo ERC-20
+- seed the game bankroll with SepoliaETH/native test ETH or a demo ERC-20
 - update `frontend/config.js` with deployed addresses
 
 Use a secure private key flow:

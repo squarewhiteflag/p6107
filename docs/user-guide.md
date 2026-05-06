@@ -7,9 +7,11 @@
 3. Connect the wallet from the dashboard.
 4. Approve FATE before using ERC-20 gameplay.
 
+The frontend labels the native test currency as `SepoliaETH`. It is still the EVM native token path (`address(0)`) in the contract, but the label makes clear that demos should use Sepolia or Anvil test funds, not mainnet ETH.
+
 ## Oracle Dice
 
-1. Select ETH or FATE.
+1. Select SepoliaETH or FATE.
 2. Enter wager, reveal bond, and roll-under target.
 3. Submit `Commit Dice Bet`.
 4. Fulfill the request through the Mock VRF panel during local demos.

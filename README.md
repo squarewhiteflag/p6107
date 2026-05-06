@@ -13,7 +13,7 @@ It contains a Foundry smart-contract project, a Vite/React MetaMask frontend, te
 - Local VRF-style coordinator that stores a transparent `proofHash` for demos.
 - Request retry paths for dice and raffle if randomness stalls.
 - Two games: dice and time-based raffle.
-- ETH and ERC-20 betting through `address(0)` and demo `FATE` token.
+- SepoliaETH/native test ETH and ERC-20 betting through `address(0)` and demo `FATE` token.
 - House treasury, reserved payout accounting, reveal bonds, and pooled raffle pots.
 - Automatic payout on dice reveal and raffle finalization.
 - Minimum/maximum bet limits and configurable house edge.
@@ -77,7 +77,7 @@ forge script script/DeployChainFateArena.s.sol:DeployChainFateArena \
 
 Copy the deployed `ChainFateArena`, `MockVRFCoordinator`, and `MockERC20` addresses into `frontend/config.js`.
 
-Run the React frontend:
+Run the React frontend. The UI labels the native test currency as `SepoliaETH` so demos do not look like mainnet ETH betting:
 
 ```bash
 npm --prefix frontend run dev

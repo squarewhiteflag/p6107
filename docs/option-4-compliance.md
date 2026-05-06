@@ -26,7 +26,7 @@
 
 ## Betting and Treasury
 
-- ETH betting through `address(0)`.
+- SepoliaETH/native test ETH betting through `address(0)`.
 - ERC-20 betting through `MockERC20` FATE token.
 - Configurable `minBet`, `maxBet`, and `houseEdgeBps`.
 - Reserved accounting for:

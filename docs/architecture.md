@@ -15,7 +15,7 @@ flowchart LR
     CL --> C
     C --> A
     M --> A
-    A --> E["ETH bankroll"]
+    A --> E["SepoliaETH bankroll"]
     A --> T["FATE ERC-20 bankroll"]
     A --> R["Reserved payouts, bonds, and raffle pots"]
     A --> H["House treasury"]
@@ -28,7 +28,7 @@ flowchart LR
 Responsibilities:
 
 - configure accepted tokens and house edge
-- hold ETH/ERC-20 bankroll liquidity
+- hold SepoliaETH/native test ETH and ERC-20 bankroll liquidity
 - accept dice wagers and raffle ticket purchases
 - request randomness through a coordinator interface
 - receive callback randomness and proof hashes
